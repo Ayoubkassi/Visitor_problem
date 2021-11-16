@@ -40,6 +40,9 @@ void visit(queue<Cell> q, Cell cell ,int array[][SIZE]){
     //verify if the value is equal to 1
     if(array[cell.row][cell.col] == 1){
       q.push(cell);
+      //cella lready visited;
+      array[cell.row][cell.col] = -1;
+
     }
   }
 }
@@ -56,7 +59,7 @@ int main(){
     {0,0,0,1,1}
   };
 
-  printArray(array,SIZE);
+  //printArray(array,SIZE);
 
   //Search BFS
 
@@ -66,6 +69,28 @@ int main(){
   Cell target(SIZE,SIZE-1);
 
   visit(q, start , array);
+
+  while(!q.empty()){
+    Cell cell = q.front();
+
+    //all directions
+
+    if(cell.row == target.row && cell.col == target.col){
+      for(auto i=cell.visitedList.begin();i!=cell.visitedList.end();i++){
+        Cell currenCell = (Cell)*i;
+        cout<<currenCell.row <<", "<<currenCell.col<<"-->";
+      }
+      cout<<endl;
+      break;
+    }
+    visit(q, Cell(cell.row+1 , cell.col+1 , cell.visitedList),array);
+    visit(q, Cell(cell.row , cell.col+1 , cell.visitedList),array);
+    visit(q, Cell(cell.row+1 , cell.col , cell.visitedList),array);
+
+
+    q.pop();
+
+  }
 
 
   return 0;
